@@ -1,0 +1,20 @@
+.visually-hidden{
+    display: none;
+}
+
+.supportInfor {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #e7e5e5;
+
+    .supportInfor_item{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        p{
+            margin-top: 17px;
+            margin-left: 10px;
+        }
+    }
+}

@@ -1,0 +1,31 @@
+.offerFooter {
+    margin: auto;
+    background-color: #00081C;
+    color: #cdcfd2;
+    line-height: 1.5;
+    padding: 30px;
+    text-align: center;
+
+    .offerFooter-content{
+        width: 550px;
+        margin: 0 auto;
+        h4 {
+                // font-weight: bold;
+                letter-spacing: 3px;
+            }
+        
+            input {
+                width: 40%;
+                margin: auto;
+
+            }
+        
+            button {
+                margin-top: 20px;
+                padding: 5px;
+                outline: none;
+            }
+    }
+
+    
+}

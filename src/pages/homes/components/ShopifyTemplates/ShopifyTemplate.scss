@@ -1,0 +1,13 @@
+.shopify{
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    margin-top: 5em;
+    background-color: #f5f5f5;
+
+    .shopify-left{
+        text-align: right;
+        width: 300px;
+        margin-right: 10em;
+    }
+}
