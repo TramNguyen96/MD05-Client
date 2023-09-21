@@ -1,5 +1,6 @@
 import './Navbar.scss';
 import { Link } from 'react-router-dom';
+import Search from './Search/Search';
 
 
 export default function Navbar() {
@@ -26,7 +27,7 @@ export default function Navbar() {
                 </div>
                 <div className="right_content">
                     {/* Search */}
-                    {/* <Search /> */}
+                    <Search />
                     {/* Wishlist */}
                     <i className="fa-regular fa-heart" style={{ cursor: "pointer", color: "#ccc" }}></i>
                     {/* Cart */}

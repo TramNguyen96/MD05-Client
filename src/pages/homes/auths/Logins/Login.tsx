@@ -2,12 +2,20 @@ import './Login.scss'
 // import { useTranslation } from 'react-i18next'
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin, Modal } from 'antd';
-import { memo, useState, FormEvent } from 'react'
-// import api from '@services/apis'
+import { memo, useState, FormEvent, useEffect } from 'react'
+import api from '@services/api'
 import Loading from '../loadings/Loading';
+import { useSelector } from 'react-redux';
+import { StoreType } from '../../../../stores/index';
 
 
 function Login() {
+    const userStore = useSelector((store: StoreType) => store.userStore)
+
+    useEffect(() => {
+        console.log("userStore", userStore);
+
+    }, [])
     // const { t } = useTranslation();
     const [load, setLoad] = useState(false);
 
@@ -20,44 +28,27 @@ function Login() {
         />
     );
 
-    // async function login(event: FormEvent) {
-    //     event.preventDefault();
+    async function handleLogin(e: React.FormEvent) {
+        e.preventDefault();
+        let data = {
+            userNameOrEmail: (e.target as any).userNameOrEmail.value,
+            password: (e.target as any).password.value
+        }
 
-    //     if (load) return;
+        await api.userApi.login(data)
+            .then(res => {
+                console.log("res", res)
+                if (res.status == 200) {
+                    localStorage.setItem("token", res.data.token)
+                    // window.location.href = "/"
+                }
+            })
+            .catch(err => {
+                console.log("err", err)
+            })
 
-    //     let data = {
-    //         userName: (event.target as any).userName.value,
-    //         password: (event.target as any).password.value,
-    //     }
+    }
 
-    //     setLoad(true);
-
-    //     await api.userApi.login(data)
-    //         .then(res => {
-    //             if (res.status !== 200) {
-    //                 Modal.confirm({
-    //                     content: res.data.message,
-    //                     okText: "Again"
-    //                 })
-    //             } else {
-    //                 Modal.success({
-    //                     content: res.data.message,
-    //                     onOk: () => {
-    //                         localStorage.setItem("token", res.data.token)
-    //                         window.location.href = "/";
-    //                     },
-    //                 })
-    //             }
-    //         })
-    //         .catch(err => {
-    //             Modal.success({
-    //                 content: "Server Network!",
-    //                 okText: "Again"
-    //             })
-    //         })
-
-    //     setLoad(false);
-    // }
     return (
         <div className='register'>
             <div className='register_main'>
@@ -70,12 +61,12 @@ function Login() {
 
                 <div className='register_form'>
                     <form
-                    // onSubmit={(e) => {
-                    //     login(e)
-                    // }}  
+                        onSubmit={(e) => {
+                            handleLogin(e)
+                        }}
                     >
-                        <label htmlFor="">User Name</label><br />
-                        <input type="text" name="userName" /><br />
+                        <label htmlFor="">User Name or Email</label><br />
+                        <input type="text" name="userNameOrEmail" /><br />
 
                         <label htmlFor="">Password</label><br />
                         <input type="password" name="password" /><br />

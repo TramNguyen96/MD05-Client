@@ -7,7 +7,9 @@ import {
 export default function Carousel() {
     return (
         <div>
-            <MDBCarousel showIndicators showControls fade>
+            <MDBCarousel
+                // showControls showIndicators
+                fade>
                 <MDBCarouselItem
                     className='w-100 d-block'
                     itemId={1}

@@ -1,5 +1,5 @@
 import "./loading.scss";
-import Icon from './logo-load.png'
+import Icon from './load.png'
 
 export default function Loading() {
     return (

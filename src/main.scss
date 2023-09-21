@@ -6,3 +6,11 @@
     box-sizing: border-box;
     font-family: $ff_all;
 }
+
+.modal-backdrop.show{
+    z-index: 1;
+    opacity: 1;
+}
+// .modal-content{
+//     width: 1440px;
+// }

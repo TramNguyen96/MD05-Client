@@ -1,7 +1,7 @@
 import './Register.scss'
-import { FormEvent, memo, useState } from 'react'
+import { FormEvent, memo, useEffect, useState } from 'react'
 // import { useTranslation } from 'react-i18next'
-// import api from '@services/apis'
+import api from '@services/api';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin, Modal } from 'antd';
 import Loading from '../loadings/Loading';
@@ -20,49 +20,51 @@ function Register() {
         />
     );
 
-    // async function register(event: FormEvent) {
-    //     event.preventDefault();
+    async function register(event: FormEvent) {
+        event.preventDefault();
 
-    //     if (load) return;
+        if (load) return;
 
-    //     let newUser = {
-    //         email: (event.target as any).email.value,
-    //         userName: (event.target as any).userName.value,
-    //         password: (event.target as any).password.value,
-    //         firstName: (event.target as any).firstName.value,
-    //         lastName: (event.target as any).lastName.value,
-    //     }
+        let newUser = {
+            email: (event.target as any).email.value,
+            userName: (event.target as any).userName.value,
+            password: (event.target as any).password.value,
+            firstName: (event.target as any).firstName.value,
+            lastName: (event.target as any).lastName.value,
+        }
 
-    //     setLoad(true);
+        setLoad(true);
 
-    //     await api.userApi.register(newUser)
-    //         .then(res => {
-    //             if (res.status !== 200) {
-    //                 Modal.confirm({
-    //                     content: res.data.message,
-    //                     okText: "Again"
-    //                 })
-    //             } else {
-    //                 Modal.info({
-    //                     content: "Please check your email to verify your email!",
-    //                     // onOk: () => {
-    //                     //     window.location.href = "/login";
-    //                     // },
-    //                 })
-    //             }
-    //         })
-    //         .catch(err => {
-    //             console.log("err", err);
+        await api.userApi.register(newUser)
+            .then(res => {
+                console.log("res.data", res.data);
 
-    //             Modal.success({
-    //                 content: "Server Network!",
-    //                 okText: "Again"
-    //             })
-    //         })
+                if (res.status !== 200) {
+                    Modal.confirm({
+                        content: res.data.message,
+                        okText: "Again"
+                    })
+                } else {
+                    Modal.info({
+                        content: "Please check your email to verify your email!",
+                        // onOk: () => {
+                        //     window.location.href = "/login";
+                        // },
+                    })
+                }
+            })
+            .catch(err => {
+                console.log("err", err);
 
-    //     setLoad(false);
+                Modal.success({
+                    content: "Server Network!",
+                    okText: "Again"
+                })
+            })
 
-    // }
+        setLoad(false);
+
+    }
     return (
         <div className='register'>
             <div className='register_main'>
@@ -75,9 +77,9 @@ function Register() {
 
                 <div className='register_form'>
                     <form
-                    // onSubmit={(e) => {
-                    //     register(e)
-                    // }} 
+                        onSubmit={(e) => {
+                            register(e)
+                        }}
                     >
                         <label htmlFor="">User Name</label><br />
                         <input type="text" name="userName" /><br />
