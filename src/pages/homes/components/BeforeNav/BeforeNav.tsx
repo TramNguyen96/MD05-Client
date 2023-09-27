@@ -34,30 +34,38 @@ export default function BeforeNavbar() {
                         <div className="feature_textname">
                             {
                                 isLoggedIn ? (
-                                    <div>
-                                        <a href="/profile">
-                                            <img src="https://www.slotcharter.net/wp-content/uploads/2020/02/no-avatar.png" className="avatar_login" />
-                                        </a>
+                                    <div className="feature_textname_main">
 
+                                        {
+                                            userStore && (
+                                                <>
+                                                    <a href="/profile">
+                                                        <img src={`${(userStore as User).avatar}`} className="avatar_login" />
+                                                    </a>
 
-                                        <p>{`Hi, ${(userStore! as User).firstName} ${(userStore! as User).lastName}`}
-                                            {(userStore! as User).role == "ADMIN" ? (
-                                                <a href="/admin" className="feature_textname_a">
-                                                    <i className="fa-solid fa-user-shield"></i>
-                                                </a>
-                                            ) : null}
+                                                    <p>{`Hi, ${(userStore as User).firstName} ${(userStore as User).lastName}`}
+                                                        {(userStore! as User).role == "ADMIN" ? (
+                                                            <a href="/admin" className="feature_textname_a">
+                                                                <i className="fa-solid fa-user-shield"></i>
+                                                            </a>
+                                                        ) : null}
 
-                                            <a href="#" className="feature_textname_a"
-                                                onClick={() => {
-                                                    window.confirm("Are you sure want to logout?")
-                                                    // dispatch(userActions.logOut())
-                                                    // dispatch(userAction.logOut(store.userStore.data))
-                                                    localStorage.removeItem("token")
-                                                    // localStorage.removeItem("carts")
-                                                    window.location.reload()
-                                                }}
-                                            ><i className="fa-solid fa-arrow-right-from-bracket"></i></a></p>
+                                                        <a href="#" className="feature_textname_a"
+                                                            onClick={() => {
+                                                                window.confirm("Are you sure want to logout?")
+                                                                // dispatch(userActions.logOut())
+                                                                // dispatch(userAction.logOut(store.userStore.data))
+                                                                localStorage.removeItem("token")
+                                                                // localStorage.removeItem("carts")
+                                                                window.location.reload()
+                                                            }}>
 
+                                                            <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                                                        </a>
+                                                    </p>
+                                                </>
+                                            )
+                                        }
                                     </div>
                                 )
                                     :

@@ -7,6 +7,7 @@ import RouteAuth from "./RouteAuth";
 import RouteCategory from "./RouteCategory";
 import RouteProduct from "./RouteProduct";
 import RouteCart from "./RouteCart";
+import RouteAdmin from "./RouteAdmin";
 
 export default function RouteSetUp() {
   return (
@@ -19,6 +20,7 @@ export default function RouteSetUp() {
         </Route>
         {RouteAuth}
         {RouteCart}
+        {RouteAdmin}
 
       </Routes>
 

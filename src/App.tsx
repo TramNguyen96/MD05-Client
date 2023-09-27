@@ -14,7 +14,7 @@ function App() {
         token: localStorage.getItem("token")
       })
         .then(res => {
-          console.log("res.data", res.data);
+          // console.log("res.data", res.data);
           if (res.status == 200) {
             dispatch(userAction.setData(res.data.data))
           }

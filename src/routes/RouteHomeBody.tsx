@@ -7,6 +7,8 @@ import Category from '@pages/homes/components/Category/Category'
 import Offer from '@pages/homes/components/Offer/Offer'
 import ChatBox from '~/pages/homes/chatbox/ChatBox'
 import { Modal } from 'antd'
+import CardCollection from '~/pages/homes/components/CardCollection/CardCollection'
+import Seller from '~/pages/homes/components/Seller/Seller'
 
 export default function RouteHomeBody() {
     const [openChat, setOpenChat] = useState(false);
@@ -27,6 +29,8 @@ export default function RouteHomeBody() {
                     </div>
             }
             <Carousel />
+            <CardCollection />
+            <Seller />
             {/* New arrival*/}
             <ShopifyTemplate />
             {/* <Test /> */}

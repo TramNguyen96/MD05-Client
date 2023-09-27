@@ -12,10 +12,10 @@ import { StoreType } from '../../../../stores/index';
 function Login() {
     const userStore = useSelector((store: StoreType) => store.userStore)
 
-    useEffect(() => {
-        console.log("userStore", userStore);
+    // useEffect(() => {
+    //     console.log("userStore", userStore);
 
-    }, [])
+    // }, [])
     // const { t } = useTranslation();
     const [load, setLoad] = useState(false);
 
@@ -40,7 +40,7 @@ function Login() {
                 console.log("res", res)
                 if (res.status == 200) {
                     localStorage.setItem("token", res.data.token)
-                    // window.location.href = "/"
+                    window.location.href = "/"
                 }
             })
             .catch(err => {

@@ -6,6 +6,7 @@ export default
     <>
         <Route path="/register" element={Lazy(() => import("@pages/homes/auths/Registers/Register"))()}></Route>
         <Route path="/login" element={Lazy(() => import("@pages/homes/auths/Logins/Login"))()}></Route>
+        <Route path="/profile" element={Lazy(() => import("@pages/homes/auths/profiles/Profile"))()}></Route>
     </>
 
 

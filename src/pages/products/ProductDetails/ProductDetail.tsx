@@ -93,6 +93,7 @@ export default function ProductDetail() {
                             <div className="lightbox bg-image hover-zoom">
                                 <img
                                     // src={avatar == '' ? productDetail?.avatar : avatar}
+                                    src='https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2Fe52b88ce20896801a51f5602a7740ee0493c0f31_800x800.png?alt=media&token=1b6dccff-9f8f-40e5-a06b-816aa73b55cb'
                                     alt="Gallery image 1"
                                     className="ecommerce-gallery-main-img active w-100"
                                 />
@@ -113,6 +114,30 @@ export default function ProductDetail() {
                                 </div>
                             ))
                         } */}
+
+                        <div className="col-3 mini_pictures" style={{ marginTop: '0.5em' }}>
+                            <img
+                                src="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2Fd965a25ddf4dca38d130d8c8e6efb05a451659c2.png?alt=media&token=8e3a9d79-a1b9-4035-8662-92b9f088f900"
+                                data-mdb-img="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2Fd965a25ddf4dca38d130d8c8e6efb05a451659c2.png?alt=media&token=8e3a9d79-a1b9-4035-8662-92b9f088f900"
+                                alt="Gallery image 1"
+                                className="active w-100"
+                            // data-picture={}
+                            />
+                            <img
+                                src="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2F59b74c3a450bcb740430b7483593e4efb4d2e2bf.png?alt=media&token=18bbc6a1-a2a2-4762-8651-8bb28f6210cd"
+                                data-mdb-img="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2F59b74c3a450bcb740430b7483593e4efb4d2e2bf.png?alt=media&token=18bbc6a1-a2a2-4762-8651-8bb28f6210cd"
+                                alt="Gallery image 2"
+                                className="active w-100"
+                            // data-picture={}
+                            />
+                            <img
+                                src="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2F9de7c7967dbbbad224ba4ec3f69e1aca52814c36.png?alt=media&token=45ea35f6-8158-42e1-90f6-cf694ea81fe7"
+                                data-mdb-img="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2F9de7c7967dbbbad224ba4ec3f69e1aca52814c36.png?alt=media&token=45ea35f6-8158-42e1-90f6-cf694ea81fe7"
+                                alt="Gallery image 3"
+                                className="active w-100"
+                            // data-picture={}
+                            />
+                        </div>
 
                     </div>
                 </div>
@@ -175,5 +200,6 @@ export default function ProductDetail() {
             </div>
 
         </div>
+
     )
 }
