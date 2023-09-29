@@ -3,6 +3,7 @@ import './BeforeNav.scss';
 import { StoreType, store } from '~/stores';
 import { useEffect, useState } from 'react';
 import { User } from '~/utils/Interfaces/User';
+import { Modal } from 'antd';
 
 export default function BeforeNavbar() {
     const userStore = useSelector((store: StoreType) => {
@@ -33,31 +34,32 @@ export default function BeforeNavbar() {
                     <div className="before_nav_content_left">
                         <div className="feature_textname">
                             {
-                                isLoggedIn ? (
+                                userStore.data ? (
                                     <div className="feature_textname_main">
 
                                         {
-                                            userStore && (
+                                            userStore.data && (
                                                 <>
                                                     <a href="/profile">
-                                                        <img src={`${(userStore as User).avatar}`} className="avatar_login" />
+                                                        <img src={`${(userStore.data as User).avatar}`} className="avatar_login" />
                                                     </a>
 
-                                                    <p>{`Hi, ${(userStore as User).firstName} ${(userStore as User).lastName}`}
-                                                        {(userStore! as User).role == "ADMIN" ? (
-                                                            <a href="/admin" className="feature_textname_a">
+                                                    <p>{`Hi, ${(userStore.data as User).firstName} ${(userStore.data as User).lastName}`}
+                                                        {(userStore.data! as User).role == "ADMIN" ? (
+                                                            <a href="/admin/dashboard" className="feature_textname_a">
                                                                 <i className="fa-solid fa-user-shield"></i>
                                                             </a>
                                                         ) : null}
 
                                                         <a href="#" className="feature_textname_a"
                                                             onClick={() => {
-                                                                window.confirm("Are you sure want to logout?")
-                                                                // dispatch(userActions.logOut())
-                                                                // dispatch(userAction.logOut(store.userStore.data))
-                                                                localStorage.removeItem("token")
-                                                                // localStorage.removeItem("carts")
-                                                                window.location.reload()
+                                                                Modal.confirm({
+                                                                    content: "Are you sure want to logout?",
+                                                                    onOk: () => {
+                                                                        localStorage.removeItem("token")
+                                                                        userStore.socket?.disconnect()
+                                                                    }
+                                                                })
                                                             }}>
 
                                                             <i className="fa-solid fa-arrow-right-from-bracket"></i>

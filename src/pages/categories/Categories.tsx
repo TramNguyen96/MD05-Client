@@ -1,6 +1,33 @@
+import { useEffect, useState } from 'react'
 import './Categories.scss'
+import api from '~/services/api'
+import { Modal } from 'antd'
+import { Product } from '~/utils/Interfaces/Product'
+import { useDispatch, useSelector } from 'react-redux'
+import { StoreType } from '~/stores'
+import { productAction } from '~/stores/slices/product.slice'
 
 export default function Categories() {
+
+    const [product, setProduct] = useState<Product | null>(null)
+    const dispatch = useDispatch();
+    const productStore = useSelector((store: StoreType) => store.productStore)
+
+    useEffect(() => {
+        api.productApi.findAll()
+            .then(res => {
+                dispatch(productAction.setDataApi(res.data.data))
+            })
+            .catch(err => {
+                console.log("err", err);
+
+            })
+    }, [])
+
+    useEffect(() => {
+
+    })
+
     return (
         <div>
             <div className="items">

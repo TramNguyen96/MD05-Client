@@ -1,9 +1,33 @@
 import './Navbar.scss';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Search from './Search/Search';
+import { useEffect, useState } from 'react';
+import api from '~/services/api';
+import { Category } from '~/utils/Interfaces/Category';
+import { Modal } from 'antd';
 
 
 export default function Navbar() {
+    const { categoryId } = useParams<string>()
+    // console.log("categoryId", categoryId);
+
+    const [categories, setCategories] = useState<Category[]>([])
+
+    useEffect(() => {
+        api.categoryApi.findAll()
+            .then(res => {
+                if (res.status !== 200) {
+                    Modal.warning(res.data.message)
+                } else {
+                    setCategories(res.data.data)
+                }
+            })
+            .catch(err => {
+                console.log("err", err);
+
+            })
+    }, [])
+
     return (
         <div className='nav' >
             <div className="nav_content">
@@ -18,11 +42,11 @@ export default function Navbar() {
                 <div className="middle_content">
 
                     <Link to="/" className="item" key={Date.now() * Math.random()}>HOME</Link>
-                    {/* {
-                        categories.map(category => (
-                            <Link to={`/category/${category.id}`} className="item" key={Date.now() * Math.random()} style={{ textTransform: 'uppercase' }} > {category.title}</Link>
+                    {
+                        categories?.map(category => (
+                            <Link to={`/collection/${category.id}`} className="item" key={Date.now() * Math.random()} style={{ textTransform: 'uppercase' }} > {category.title}</Link>
                         ))
-                    } */}
+                    }
 
                 </div>
                 <div className="right_content">

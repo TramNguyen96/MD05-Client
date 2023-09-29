@@ -4,7 +4,7 @@ import Lazy from '../utils/lazies/Lazy';
 export default
 
     <>
-        <Route path="/collection/:id" element={Lazy(() => import("@pages/categories/Categories"))()}></Route>
+        <Route path="/collection/:categoryId" element={Lazy(() => import("@pages/categories/Categories"))()}></Route>
     </>
 
 

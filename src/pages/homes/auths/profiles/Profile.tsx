@@ -11,7 +11,7 @@ export default function Profile() {
         <div className='profile'>
             <div className="student-profile py-4">
                 <div className="container">
-                    <div className="row">
+                    <div className="row" style={{ width: '100%' }}>
                         <div className="col-lg-4">
                             <div className="cards shadow-sm">
 

@@ -1,5 +1,5 @@
 .product-manager-content {
-    padding-top: 7em;
+    padding-top: 1em;
 }
 
 .manager_product_title {
@@ -16,7 +16,7 @@
     justify-content: center;
     align-items: center;
     color: $color_primary;
-    margin-left: 5em;
+    // margin-left: 5em;
 
     .manager_product_form {
 
@@ -27,7 +27,7 @@
         input {
             border: 1px solid $color_tertiary;
             outline: none;
-            width: 350px;
+            width: 450px;
             height: 40px;
             margin-top: 0.5em;
             padding: 10px;

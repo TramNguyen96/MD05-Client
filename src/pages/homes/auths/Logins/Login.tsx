@@ -1,21 +1,23 @@
 import './Login.scss'
 // import { useTranslation } from 'react-i18next'
 import { LoadingOutlined } from '@ant-design/icons';
-import { Spin, Modal } from 'antd';
+import { Spin, message } from 'antd';
 import { memo, useState, FormEvent, useEffect } from 'react'
 import api from '@services/api'
 import Loading from '../loadings/Loading';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { StoreType } from '../../../../stores/index';
+import { userAction } from '~/stores/slices/user.slice';
+import { useNavigate } from 'react-router-dom';
 
 
 function Login() {
     const userStore = useSelector((store: StoreType) => store.userStore)
 
-    // useEffect(() => {
-    //     console.log("userStore", userStore);
+    const dispatch = useDispatch()
 
-    // }, [])
+    const navigate = useNavigate()
+
     // const { t } = useTranslation();
     const [load, setLoad] = useState(false);
 
@@ -37,17 +39,23 @@ function Login() {
 
         await api.userApi.login(data)
             .then(res => {
-                console.log("res", res)
                 if (res.status == 200) {
                     localStorage.setItem("token", res.data.token)
-                    window.location.href = "/"
+                    dispatch(userAction.reload())
+                    message.success("Login successfully!")
                 }
             })
             .catch(err => {
                 console.log("err", err)
+                message.error("Error Login Api")
             })
-
     }
+
+    useEffect(() => {
+        if (userStore.data) {
+            navigate("/")
+        }
+    }, [userStore.data])
 
     return (
         <div className='register'>
@@ -83,6 +91,12 @@ function Login() {
                                 </div>
 
                             </button>
+                        </div>
+
+                        <div className='icon'>
+                            <i className="fa-brands fa-facebook"></i>
+                            <i className="fa-brands fa-twitter" style={{ padding: '0 20px' }}></i>
+                            <i className="fa-brands fa-google-plus-g"></i>
                         </div>
 
                         <p className="text-center text-muted mt-2 mb-0"> Don't have an account? <a href="/register"
