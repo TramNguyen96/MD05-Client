@@ -9,5 +9,9 @@ export default {
     findAll: async function(){
         return await axios.get(import.meta.env.VITE_SV_HOST + "products" )
     },
+
+    findById: async function(productId: string){
+        return await axios.get(import.meta.env.VITE_SV_HOST + "products/" +  productId)
+    },
     
 }

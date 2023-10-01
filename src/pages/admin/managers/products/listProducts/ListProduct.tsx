@@ -60,9 +60,7 @@ export default function ListProduct() {
                                         <button onClick={() => {
                                             setProductId(product.id)
                                         }} type="button" className="btn btn-primary">
-                                            {
-                                                productId && <ProductOption productId={productId} setProductId={setProductId} />
-                                            }
+                                            <ProductOption productId={productId} setProductId={setProductId} />
                                         </button>
 
 
@@ -83,7 +81,9 @@ export default function ListProduct() {
                     </tbody>
                 </table>
             </div>
-
+            {/* {
+                productId && <ProductOption productId={productId} setProductId={setProductId} />
+            } */}
         </div>
     )
 }

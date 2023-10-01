@@ -15,35 +15,10 @@ import {
     MDBTypography,
 } from "mdb-react-ui-kit";
 import { useSelector } from 'react-redux';
-// import { StoreType } from "../../stores";
 import { message, Modal } from 'antd';
+import { StoreType } from '~/stores';
+import currency from 'currency.js';
 
-
-// interface Product {
-//     id: string;
-//     name: string;
-//     avatar: string;
-//     price: number;
-//     des: string;
-//     categoryId: string;
-//     productPictures: {
-//         id: string;
-//         path: string;
-//     }[]
-// }
-// interface CartItem {
-//     productId: string;
-//     quantity: number;
-// }
-// interface CartItemDetail extends CartItem {
-//     productDetail: Product
-// }
-
-// interface newGuestReceipt {
-//     email: string;
-//     total: number;
-//     payMode: string;
-// }
 
 export default function Cart() {
     // const [cart, setCart] = useState<CartItemDetail[]>([]);
@@ -140,6 +115,15 @@ export default function Cart() {
 
     // }
 
+    const userStore = useSelector((store: StoreType) => store.userStore)
+
+    const [quantity, setQuantity] = useState(userStore.cart?.detail[0].quantity)
+    // const [quantity, setQuantity] = useState(0)
+
+    function deleteItem() {
+
+    }
+
     return (
         <div className='cart-total' >
             <div className='cart-total-table'>
@@ -150,7 +134,7 @@ export default function Cart() {
                                 <h3 className=" mb-3 text-center" style={{ fontSize: '30px', fontWeight: 'bold' }}>List Shopping Cart</h3>
                                 <p className="mb-3 text-center">
                                     <i className="fa-solid fa-tags"></i> <span className=" font-weight-bold">
-                                        {/* {cart.length} */}
+                                        {userStore.cart?.detail.length}
                                     </span> items in your cart
                                 </p>
                                 <table
@@ -160,6 +144,7 @@ export default function Cart() {
                                 >
                                     <thead>
                                         <tr>
+                                            <th style={{ width: "15%", fontWeight: 'bold' }}>#</th>
                                             <th style={{ width: "40%", fontWeight: 'bold' }}>Product</th>
                                             <th style={{ width: "12%", fontWeight: 'bold' }}>Price</th>
                                             <th style={{ width: "20%", fontWeight: 'bold' }}>Quantity</th>
@@ -168,75 +153,106 @@ export default function Cart() {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {/* {
-                                            cart.map((item, index) => (
-                                                <tr key={item.productId}>
-                                                    <td data-th="Product">
-                                                        <div className="row">
-                                                            <div className="col-md-3 text-left">
-                                                                <img
-                                                                    src={item.productDetail.avatar}
-                                                                    alt=""
-                                                                    className="img-fluid d-none d-md-block rounded mb-2 shadow "
-                                                                />
+                                        {
+                                            userStore.cart?.detail.map((item, index) => (
+                                                <>
+
+                                                    <tr key={item.id}>
+                                                        <td>{index + 1}</td>
+                                                        <td data-th="Product">
+                                                            <div className="row">
+                                                                <div className="col-md-3 text-left">
+                                                                    <img
+                                                                        src={item.option.pictures[0].avatar}
+                                                                        alt=""
+                                                                        className="img-fluid d-none d-md-block rounded mb-2 shadow "
+                                                                        style={{ width: '100px', height: '100px' }}
+                                                                    />
+                                                                </div>
+                                                                <div className="col-md-9 text-left mt-sm-2">
+                                                                    <h4>{item.option.product.name}</h4>
+                                                                    <p className="font-weight-light">{item.option.title}</p>
+                                                                </div>
                                                             </div>
-                                                            <div className="col-md-9 text-left mt-sm-2">
-                                                                <h4>{item.productDetail.name}</h4>
-                                                                <p className="font-weight-light">Brand &amp; Name</p>
+                                                        </td>
+                                                        <td data-th="Price">{currency(item.option.price).format()}</td>
+                                                        <td data-th="Quantity" className='content-quantity'>
+                                                            <button type="button"
+                                                                onClick={() => {
+                                                                    if (Number(quantity) > 1) {
+                                                                        let newQuantity = Number(quantity) - 1;
+                                                                        setQuantity(newQuantity);
+                                                                        userStore.socket?.emit("addToCart", {
+                                                                            receipt: item.receiptId,
+                                                                            optionId: item.optionId,
+                                                                            quantity: newQuantity
+                                                                        })
+                                                                    }
+
+                                                                    // if (Number(quantity) == 1){
+                                                                    //     Modal.confirm({
+                                                                    //         content: "Are you want to delete?",
+                                                                    //         onOk: () => {
+
+                                                                    //         }
+                                                                    //     })
+                                                                    // }
+
+                                                                }}
+                                                            >-</button>
+                                                            <span>{item.quantity}</span>
+                                                            <button type="button"
+                                                                onClick={() => {
+                                                                    let newQuantity = Number(quantity) + 1;
+                                                                    setQuantity(newQuantity);
+                                                                    userStore.socket?.emit("addToCart", {
+                                                                        receipt: item.receiptId,
+                                                                        optionId: item.optionId,
+                                                                        quantity: newQuantity
+                                                                    })
+                                                                }}
+                                                            >+</button><br />
+                                                        </td>
+                                                        <td>
+                                                            {currency(item.option.price * item.quantity).format()}
+                                                        </td>
+                                                        <td className="actions" data-th="">
+                                                            <div className="text-right">
+                                                                {/* <button className="btn btn-white border-secondary bg-white btn-md mb-2">
+                                                                <i className="fas fa-sync" />
+                                                            </button> */}
+                                                                <button
+                                                                    // onClick={() => {
+                                                                    //     if (window.confirm("Delete?")) {
+                                                                    //         deleteItem(index, item.productId)
+                                                                    //         window.location.reload()
+                                                                    //     }
+                                                                    // }}
+                                                                    className="btn btn-white border-secondary bg-white btn-md mb-2">
+                                                                    <i className="fas fa-trash" />
+                                                                </button>
                                                             </div>
-                                                        </div>
-                                                    </td>
-                                                    <td data-th="Price">{currency(item.productDetail.price).format()}</td>
-                                                    <td data-th="Quantity" className='content-quantity'>
-                                                        <button type="button"
-                                                            onClick={(e) => {
-                                                                updateCart(e, item);
-                                                            }}
-                                                        >-</button>
-                                                        <span>{item.quantity}</span>
-                                                        <button type="button"
-                                                            onClick={(e) => {
-                                                                updateCart(e, item);
-                                                            }}
-                                                        >+</button><br />
-                                                    </td>
-                                                    <td>
-                                                        {currency(item.productDetail.price * item.quantity).format()}
-                                                    </td>
-                                                    <td className="actions" data-th="">
-                                                        <div className="text-right">
-                                                            <button className="btn btn-white border-secondary bg-white btn-md mb-2">
-                                                            <i className="fas fa-sync" />
-                                                        </button>
-                                                            <button onClick={() => {
-                                                                if (window.confirm("Delete?")) {
-                                                                    deleteItem(index, item.productId)
-                                                                    window.location.reload()
-                                                                }
-                                                            }}
-                                                                className="btn btn-white border-secondary bg-white btn-md mb-2">
-                                                                <i className="fas fa-trash" />
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                        </td>
+                                                    </tr>
+                                                </>
+
                                             ))
-                                        } */}
+                                        }
 
                                     </tbody>
                                 </table>
                                 <div className="float-right text-right">
-                                    <h4 style={{ fontSize: '20px' }}>Subtotal:</h4>
+                                    <h4 style={{ fontSize: '20px' }}>Total:</h4>
                                     <h1 style={{ fontSize: '20px', fontWeight: 'bold', marginTop: '0.5em' }}>
-                                        {/* {
-                                            cart ? (
-                                                currency(cart?.reduce((value, nextItem) => {
-                                                    return value + (nextItem.quantity * nextItem.productDetail.price)
+                                        {
+                                            userStore.cart ? (
+                                                currency(userStore.cart?.detail.reduce((value, nextItem) => {
+                                                    return value + (nextItem.quantity * nextItem.option.price)
                                                 }, 0)).format()
                                             )
                                                 :
                                                 currency(0).format()
-                                        } */}
+                                        }
                                     </h1>
                                 </div>
                             </div>
@@ -277,9 +293,15 @@ export default function Cart() {
                                     {/* Payment Method */}
                                     <>
                                         <form
-                                        // onSubmit={(eventForm) => {
-                                        //     checkOut(eventForm);
-                                        // }}
+                                            onSubmit={(e: React.FormEvent) => {
+                                                e.preventDefault();
+                                                let payMode = (e.target as any).payMode.value;
+                                                console.log("payMode", payMode)
+                                                userStore.socket?.emit("payCash", {
+                                                    receiptId: userStore.cart?.id,
+                                                    userId: userStore.data?.id
+                                                })
+                                            }}
                                         >
 
                                             {/* Cash */}
@@ -287,13 +309,12 @@ export default function Cart() {
                                                 <input
                                                     className="form-check-input"
                                                     type="radio"
-                                                    value="CASH"
-                                                    name='payment'
-                                                    id="flexRadioDefault1"
+                                                    value={"CASH"}
+                                                    name='payMode'
+                                                    defaultChecked
                                                 />
                                                 <label className="form-check-label" htmlFor="flexRadioDefault1">
-                                                    {" "}
-                                                    Cash{" "}
+                                                    Cash
                                                 </label>
                                             </div>
                                             {/* ZaloPay */}
@@ -301,22 +322,16 @@ export default function Cart() {
                                                 <input
                                                     className="form-check-input"
                                                     type="radio"
-                                                    value="ZALO"
-                                                    name='payment'
-                                                    id="flexRadioDefault2"
-                                                // defaultChecked=""
+                                                    value={"ZALO"}
+                                                    name='payMode'
                                                 />
                                                 <label className="form-check-label" htmlFor="flexRadioDefault2">
-                                                    {" "}
-                                                    ZaloPay{" "}
+                                                    ZaloPay
                                                 </label>
                                             </div>
 
                                             <button
-                                                // onClick={() => {
-                                                //     handleOrder()
-                                                // }}
-                                                type='button' className="payment-btn"
+                                                type="submit" className="payment-btn"
                                             >CHECKOUT</button>
 
                                         </form>

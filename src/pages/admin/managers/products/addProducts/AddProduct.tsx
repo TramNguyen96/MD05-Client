@@ -5,8 +5,10 @@ import api from '~/services/api'
 import { StoreType } from '~/stores'
 import { productAction } from '~/stores/slices/product.slice'
 import { Category } from '~/utils/Interfaces/Category'
-import { Product } from '~/utils/Interfaces/Product'
-import { User } from '~/utils/Interfaces/User'
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin, Modal, message } from 'antd';
+import Loading from '~/utils/loadings/Loading'
+
 
 interface Picture {
     file: File;
@@ -14,6 +16,17 @@ interface Picture {
 }
 
 export default function AddProduct() {
+    const [load, setLoad] = useState(false);
+
+    const antIcon = (
+        <LoadingOutlined
+            style={{
+                fontSize: 24,
+            }}
+            spin
+        />
+    );
+
     const userStore = useSelector((store: StoreType) => {
         return store.userStore
     })
@@ -27,10 +40,8 @@ export default function AddProduct() {
     const [categories, setCategories] = useState([]);
     const [pictures, setPictures] = useState<Picture[]>([]);
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
-    const [load, setLoad] = useState(false);
     const [formValues, setFormValues] = useState({
         name: "",
-        price: "",
         des: ""
     });
 
@@ -55,20 +66,28 @@ export default function AddProduct() {
     async function addNewProduct(e: React.FormEvent) {
         e.preventDefault();
 
+        if (load) return;
+
         let newProduct = {
             categoryId: (e.target as any).categoryId.value,
             name: (e.target as any).name.value,
             des: (e.target as any).des.value,
-            price: (e.target as any).price.value,
+            // price: (e.target as any).price.value,
         }
 
-        api.productApi.create(newProduct)
+        setLoad(true);
+
+        await api.productApi.create(newProduct)
             .then(res => {
                 dispatch(productAction.insertProduct(res.data.data))
+                message.success("Add new product successfully!")
             })
             .catch(err => {
                 console.log("err", err);
             })
+
+        setLoad(false);
+
     }
 
     return (
@@ -89,11 +108,11 @@ export default function AddProduct() {
                                         setFormValues({ ...formValues, name: e.target.value });
                                     }} /><br />
 
-                                <label htmlFor="">Price</label><br />
+                                {/* <label htmlFor="">Price</label><br />
                                 <input type="number" name="price" value={formValues.price}
                                     onChange={(e) => {
                                         setFormValues({ ...formValues, price: e.target.value });
-                                    }} /><br />
+                                    }} /><br /> */}
 
                                 <label htmlFor="">Description</label><br />
                                 <input type="text" name="des" value={formValues.des}
@@ -151,17 +170,15 @@ export default function AddProduct() {
                         </div>
 
                         <div>
-                            {/* {
+                            {
                                 load ?? <Loading />
-                            } */}
+                            }
                             <button type='submit'
-                                className='btn_submit register_form_btn'
-                            // className={`${load && 'active'} btn_submit register_form_btn `}
+                                // className='btn_submit register_form_btn'
+                                className={`${load && 'active'} btn_submit register_form_btn `}
                             >
-
-
                                 <div className='btn_loading'>
-                                    {/* <Spin indicator={antIcon} /> */}
+                                    <Spin indicator={antIcon} />
                                 </div>
                                 Add New Product
                             </button>

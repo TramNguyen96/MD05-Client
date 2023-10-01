@@ -1,36 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux'
 import RouteSetUp from './routes/RouteSetUp'
 import { useEffect } from 'react'
-import api from '@services/api'
 import { userAction } from './stores/slices/user.slice'
 import { StoreType } from './stores'
 import { Socket, io } from 'socket.io-client'
-import { message } from 'antd'
 import { User } from './utils/Interfaces/User'
+import { Receipt } from './utils/Interfaces/Receipt'
 
 function App() {
   const dispatch = useDispatch()
 
   const userStore = useSelector((store: StoreType) => store.userStore)
-
-  /* Check Token */
-  // useEffect(() => {
-  //   if (localStorage.getItem("token")) {
-  //     api.userApi.authen({
-  //       token: localStorage.getItem("token")
-  //     })
-  //       .then(res => {
-  //         // console.log("res.data", res.data);
-  //         if (res.status == 200) {
-  //           dispatch(userAction.setData(res.data.data))
-  //         }
-  //       })
-  //       .catch(err => {
-  //         console.log("err", err);
-
-  //       })
-  //   }
-  // }, [])
 
   useEffect(() => {
     if (!userStore.data) {
@@ -56,8 +36,19 @@ function App() {
 
         })
 
+        /* User */
         socket.on("receiveUserData", (user: User) => {
           dispatch(userAction.setData(user))
+        })
+
+        /* Receipt */
+        socket.on("receiveReceipt", (receipts: Receipt[]) => {
+          dispatch(userAction.setReceipt(receipts))
+        })
+
+        /* Cart */
+        socket.on("receiveCart", (cart: Receipt) => {
+          dispatch(userAction.setCart(cart))
         })
 
         dispatch(userAction.setSocket(socket))
@@ -67,8 +58,12 @@ function App() {
   }, [userStore.reload])
 
   // useEffect(() => {
-  //   console.log("userStore.data", userStore.data);
-  // }, [userStore.data])
+  //   console.log("userStore.cart", userStore.cart);
+  // }, [userStore.cart])
+
+  // useEffect(() => {
+  //   console.log("userStore.receipt", userStore.receipt);
+  // }, [userStore.receipt])
 
   return (
     <>

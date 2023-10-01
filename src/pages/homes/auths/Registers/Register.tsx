@@ -4,7 +4,7 @@ import { FormEvent, memo, useEffect, useState } from 'react'
 import api from '@services/api';
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin, Modal } from 'antd';
-import Loading from '../loadings/Loading';
+import Loading from '../../../../utils/loadings/Loading';
 
 
 function Register() {

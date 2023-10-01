@@ -1,13 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Product } from "~/utils/Interfaces/Product";
 
-const initialState: {data: null | Product[]} = {data: null}
+const initialState: {data: null | undefined | Product[]} = {data: null}
 
 const productSlice = createSlice({
     name: "product",
     initialState,
     reducers: {
         insertProduct: function(state, action){
+            
             state.data?.push(action.payload)
         },
         setDataApi: function(state, action) {
@@ -16,7 +17,6 @@ const productSlice = createSlice({
                 data: action.payload
             }
         },
-
         insertOptionProduct: function(state, action) {
             return {
                 ...state,

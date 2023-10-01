@@ -4,7 +4,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { Spin, message } from 'antd';
 import { memo, useState, FormEvent, useEffect } from 'react'
 import api from '@services/api'
-import Loading from '../loadings/Loading';
+import Loading from '../../../../utils/loadings/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { StoreType } from '../../../../stores/index';
 import { userAction } from '~/stores/slices/user.slice';

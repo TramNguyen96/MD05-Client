@@ -2,6 +2,7 @@ export interface Picture {
     id: string;
     optionId: string;
     icon: string;
+    avatar: string
 }
 
 export interface Option {
@@ -11,9 +12,8 @@ export interface Option {
     status: boolean;
     title: string;
     pictures: Picture[]
+    product: Product
 }
-
-
 
 export interface Product {
     id: string;

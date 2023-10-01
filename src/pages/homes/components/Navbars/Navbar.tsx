@@ -5,13 +5,16 @@ import { useEffect, useState } from 'react';
 import api from '~/services/api';
 import { Category } from '~/utils/Interfaces/Category';
 import { Modal } from 'antd';
+import { useSelector } from 'react-redux';
+import { StoreType } from '~/stores';
 
 
 export default function Navbar() {
     const { categoryId } = useParams<string>()
-    // console.log("categoryId", categoryId);
 
     const [categories, setCategories] = useState<Category[]>([])
+
+    const userStore = useSelector((store: StoreType) => store.userStore)
 
     useEffect(() => {
         api.categoryApi.findAll()
@@ -58,7 +61,11 @@ export default function Navbar() {
                     <Link to="/carts" className="item_cart">
                         <i className="fa-solid fa-bag-shopping " style={{ color: "#ccc" }}></i>
                         <span className="item_cart_number" style={{ color: "#ccc" }}>
-                            {/* {totalCart} */}
+                            <span>
+                                {userStore.cart?.detail.reduce((value, current) => {
+                                    return value += current.quantity
+                                }, 0)}
+                            </span>
                         </span>
                     </Link>
                 </div>

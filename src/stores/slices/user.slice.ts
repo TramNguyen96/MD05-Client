@@ -1,17 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Socket } from "socket.io-client";
+import { Receipt } from "~/utils/Interfaces/Receipt";
 import { User } from "~/utils/Interfaces/User";
 
 interface UserState {
     data: User | null;
     reload: boolean;
     socket: Socket | null;
+    receipt: Receipt[] | null;
+    cart: Receipt | null;
 }
 
 const initialState: UserState = {
     data :null,
     reload: false,
-    socket: null
+    socket: null,
+    receipt: null,
+    cart: null
 }
 
 const userSlice = createSlice({
@@ -28,6 +33,18 @@ const userSlice = createSlice({
             return {
                 ...state ,
                 socket: action.payload
+            }
+        },
+        setReceipt: function(state, action) {
+            return {
+                ...state ,
+                receipt: action.payload
+            }
+        },
+        setCart: function(state, action) {
+            return {
+                ...state ,
+                cart: action.payload
             }
         },
         reload: function(state) {

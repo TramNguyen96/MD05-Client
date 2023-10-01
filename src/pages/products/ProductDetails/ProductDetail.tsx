@@ -2,35 +2,26 @@ import { useEffect, useState } from 'react'
 import './ProductDetail.scss'
 // import api from '@/services/apis'
 import { useParams } from 'react-router-dom'
-// import currency from "currency.js";
+import api from '~/services/api';
+import { Option, Product } from '~/utils/Interfaces/Product';
+import currency from "currency.js";
+import { useSelector } from 'react-redux';
+import { StoreType } from '~/stores';
+import { Modal, message } from 'antd';
 
-
-interface Product {
-    id: string;
-    name: string;
-    avatar: string;
-    price: number;
-    des: string;
-    categoryId: string;
-    productPictures: {
-        id: string;
-        path: string;
-    }[]
-}
-
-interface CartItem {
-    productId: string;
-    quantity: number;
-}
 
 export default function ProductDetail() {
     const { productId } = useParams() as { productId: string };
 
     const [productDetail, setProductDetail] = useState<Product | null>(null)
 
+    const [selectedOption, setSelectedOption] = useState(0); // Added state for selected option
+
     const [avatar, setAvatar] = useState('');
 
     const [quantity, setQuantity] = useState(1);
+
+    const userStore = useSelector((store: StoreType) => store.userStore)
 
     // useEffect(() => {
     //     api.productApi.findById(productId)
@@ -79,6 +70,20 @@ export default function ProductDetail() {
     //     localStorage.setItem("carts", JSON.stringify(carts)) // save to local
     // }
 
+    useEffect(() => {
+        api.productApi.findById(productId)
+            .then(res => {
+                setProductDetail(res.data.data)
+            })
+            .catch(err => {
+                console.log("err", err);
+
+            })
+    }, [productId])
+
+    const handleOptionClick = (index: number) => {
+        setSelectedOption(index);
+    }
 
     return (
         <div className='product_detail'>
@@ -93,89 +98,87 @@ export default function ProductDetail() {
                             <div className="lightbox bg-image hover-zoom">
                                 <img
                                     // src={avatar == '' ? productDetail?.avatar : avatar}
-                                    src='https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2Fe52b88ce20896801a51f5602a7740ee0493c0f31_800x800.png?alt=media&token=1b6dccff-9f8f-40e5-a06b-816aa73b55cb'
+                                    src={productDetail?.options[0].pictures[0].avatar}
                                     alt="Gallery image 1"
                                     className="ecommerce-gallery-main-img active w-100"
                                 />
                             </div>
                         </div>
-                        {/* {
-                            productDetail?.productPictures.map((picture, index) => (
-                                <div className="col-3 mini_pictures" style={{ marginTop: '0.5em' }}>
-                                    <img onClick={() => {
-                                        setAvatar(picture?.path);
-                                    }}
-                                        src={picture?.path}
-                                        data-mdb-img={picture?.path}
-                                        alt="Gallery image 1"
-                                        className="active w-100"
-                                        data-picture={JSON.stringify(picture)}
-                                    />
-                                </div>
-                            ))
-                        } */}
+                        {
+                            productDetail?.options.map((optionPicture, index) =>
+                                optionPicture.pictures.map((picture) => (
+                                    <div className="col-3 mini_pictures" style={{ marginTop: '0.5em' }}>
+                                        <img onClick={() => {
+                                            setAvatar(picture.icon);
+                                        }}
+                                            src={picture.icon}
+                                            data-mdb-img={picture.icon}
+                                            alt="Gallery image 1"
+                                            className="active w-100"
+                                            data-picture={JSON.stringify(picture)}
+                                        />
+                                    </div>
+                                ))
 
-                        <div className="col-3 mini_pictures" style={{ marginTop: '0.5em' }}>
-                            <img
-                                src="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2Fd965a25ddf4dca38d130d8c8e6efb05a451659c2.png?alt=media&token=8e3a9d79-a1b9-4035-8662-92b9f088f900"
-                                data-mdb-img="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2Fd965a25ddf4dca38d130d8c8e6efb05a451659c2.png?alt=media&token=8e3a9d79-a1b9-4035-8662-92b9f088f900"
-                                alt="Gallery image 1"
-                                className="active w-100"
-                            // data-picture={}
-                            />
-                            <img
-                                src="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2F59b74c3a450bcb740430b7483593e4efb4d2e2bf.png?alt=media&token=18bbc6a1-a2a2-4762-8651-8bb28f6210cd"
-                                data-mdb-img="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2F59b74c3a450bcb740430b7483593e4efb4d2e2bf.png?alt=media&token=18bbc6a1-a2a2-4762-8651-8bb28f6210cd"
-                                alt="Gallery image 2"
-                                className="active w-100"
-                            // data-picture={}
-                            />
-                            <img
-                                src="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2F9de7c7967dbbbad224ba4ec3f69e1aca52814c36.png?alt=media&token=45ea35f6-8158-42e1-90f6-cf694ea81fe7"
-                                data-mdb-img="https://firebasestorage.googleapis.com/v0/b/md05-nestjs.appspot.com/o/images%2Fproduct-test%2F9de7c7967dbbbad224ba4ec3f69e1aca52814c36.png?alt=media&token=45ea35f6-8158-42e1-90f6-cf694ea81fe7"
-                                alt="Gallery image 3"
-                                className="active w-100"
-                            // data-picture={}
-                            />
-                        </div>
+                            )
+                        }
 
                     </div>
                 </div>
             </div>
 
             <div className='content'>
-                {/* <div className='content-name'>{productDetail?.name}</div> */}
-                {/* <div className='content-price'>{currency(productDetail?.price!).format()}</div> */}
+                <div className='content-name'>{productDetail?.name}</div>
+                <div className='content-price'>{productDetail?.options[0].price}</div>
                 <div className='content-quantity'>
                     <button type="button"
-                    // onClick={() => {
-                    //     if (quantity == 1) {
-                    //         alert("You can't buy less than one !")
-                    //     }
-                    //     if (quantity > 1) {
-                    //         setQuantity(quantity - 1)
-                    //     }
-                    // }}
+                        onClick={() => {
+                            if (quantity == 1) {
+                                message.warning("You can't buy less than one !")
+                            }
+                            if (quantity > 1) {
+                                setQuantity(Number(quantity - 1))
+                            }
+                        }}
                     >-</button>
                     <span>{quantity}</span>
                     <button type="button"
-                    // onClick={() => {
+                        onClick={() => {
 
-                    //     setQuantity(quantity + 1)
+                            setQuantity(Number(quantity + 1))
 
-                    // }}
+                        }}
                     >+</button><br />
                 </div>
+
+                <div className='content-option'>
+                    {productDetail?.options.map((item: Option, index: number) => (
+                        <div key={index}>
+                            <img src={item.pictures[0].icon} alt="" onClick={() => handleOptionClick(index)} />
+                        </div>
+                    ))}
+                </div>
+
                 <div className='content-text-des' >
                     <p className='content-text-des-title'>DESCRIPTION</p>
                     <p className='content-text-des-detail'>{productDetail?.des}</p>
                 </div>
                 <div className='add-cart-btn'>
                     <button
-                        // onClick={() => {
-                        //     handleAddToCart(productDetail?.id!)
-                        //     window.location.href = '/carts'
-                        // }}
+                        onClick={() => {
+                            if (localStorage.getItem("token")) {
+                                if (userStore.socket) {
+                                    userStore.socket.emit("addToCart", {
+                                        receiptId: userStore.cart?.id,
+                                        optionId: productDetail?.options[selectedOption].id,
+                                        quantity
+                                    })
+                                }
+                            } else {
+                                message.error("Please login to purchase !")
+                            }
+                        }}
+
                         type="button"
 
                     >ADD TO BAGS</button>

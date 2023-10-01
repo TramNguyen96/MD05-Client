@@ -89,6 +89,7 @@ export default function ProductOption({ productId, setProductId }: {
                                                                     {
                                                                         optionId && <OptionPicture setOptionId={setOptionId} optionId={optionId} productId={productId} />
                                                                     }
+                                                                    {/* <OptionPicture setOptionId={setOptionId} optionId={optionId} productId={productId} /> */}
                                                                 </button>
 
                                                             </td>
