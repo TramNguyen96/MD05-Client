@@ -6,6 +6,7 @@ import { StoreType } from './stores'
 import { Socket, io } from 'socket.io-client'
 import { User } from './utils/Interfaces/User'
 import { Receipt } from './utils/Interfaces/Receipt'
+import { Modal } from 'antd'
 
 function App() {
   const dispatch = useDispatch()
@@ -49,6 +50,37 @@ function App() {
         /* Cart */
         socket.on("receiveCart", (cart: Receipt) => {
           dispatch(userAction.setCart(cart))
+        })
+
+        /* Cash Pay */
+        socket.on("cash-status", (status: boolean) => {
+          if (status) {
+            // Modal.success({
+            //   title: "Đã thanh toán thành công",
+            //   content: "Cảm ơn bạn đã mua hàng",
+            //   onOk: () => {
+            //     console.log("đã vào!")
+            //     window.location.href = "/purchase-history"
+            //   }
+            // })
+            window.location.href = "/paid";
+          }
+        })
+
+        socket.on("payQr", (url: string | null) => {
+          dispatch(userAction.setCartPayQr(url))
+          if (!url) {
+            Modal.confirm({
+              title: "Payment failed !",
+              content: "Do you want to pay again?",
+              onOk: () => {
+                socket.emit("payZalo", {
+                  receiptId: userStore.cart?.id,
+                  userId: userStore.data?.id
+                })
+              }
+            })
+          }
         })
 
         dispatch(userAction.setSocket(socket))

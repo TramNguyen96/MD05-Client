@@ -1,3 +1,5 @@
+
+
 export interface Picture {
     id: string;
     optionId: string;
@@ -20,5 +22,5 @@ export interface Product {
     categoryId: string;
     name: string;
     des: string;
-    options: Option[]
+    options: Option[];
 }

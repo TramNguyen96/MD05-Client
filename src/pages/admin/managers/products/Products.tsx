@@ -9,6 +9,7 @@ import { Product } from '~/utils/Interfaces/Product'
 import { User } from '~/utils/Interfaces/User'
 import AddProduct from './addProducts/AddProduct'
 import ListProduct from './listProducts/ListProduct'
+import { useNavigate } from 'react-router-dom'
 
 interface Picture {
     file: File;
@@ -25,6 +26,7 @@ export default function Products() {
     })
 
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const [categories, setCategories] = useState([]);
     const [pictures, setPictures] = useState<Picture[]>([]);
@@ -77,7 +79,7 @@ export default function Products() {
         <div>
             <div className='pills' style={{ paddingTop: '5.7em', paddingLeft: '15px' }}>
                 {/* Pills navs */}
-                <ul className="nav nav-pills mb-3" id="ex1" role="tablist" style={{ borderBottom: '1px solid #ccc', backgroundColor: '#e8e3e3' }} >
+                <ul className="nav nav-pills mb-3 tab" id="ex1" role="tablist" style={{ borderBottom: '1px solid #ccc', backgroundColor: '#e8e3e3', display: 'flex' }} >
                     <li className="nav-item" role="presentation">
                         <a
                             className="nav-link active"

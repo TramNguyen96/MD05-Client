@@ -18,110 +18,24 @@ import { useSelector } from 'react-redux';
 import { message, Modal } from 'antd';
 import { StoreType } from '~/stores';
 import currency from 'currency.js';
+import { QRCode } from 'antd'
 
 
 export default function Cart() {
-    // const [cart, setCart] = useState<CartItemDetail[]>([]);
-
-    // const store = useSelector(store => store) as StoreType;
-
-    // const initialCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    // const [cartQuantity, setCartQuantity] = useState<{ id: string; name: string; quantity: number }[]>(initialCart);
-
-    // async function formatCart() {
-    //     let cartTemp: CartItemDetail[] = [];
-    //     let carts: CartItem[] = JSON.parse(localStorage.getItem("carts") ?? "[]");
-    //     for (let i in carts) {
-    //         let productDetail = await api.productApi.findById(carts[i].productId).then(res => res.data.data)
-    //         cartTemp.push({
-    //             ...carts[i],
-    //             productDetail
-    //         })
-    //     }
-    //     setCart(cartTemp)
-    // }
-
-    // useEffect(() => {
-    //     formatCart();
-    // }, [])
-
-    // useEffect(() => {
-    //     localStorage.setItem('cart', JSON.stringify(cartQuantity));
-    // }, [cartQuantity]);
-
-    // function updateCart(e: React.MouseEvent<HTMLButtonElement>, itemToUpdate: any) {
-    //     e.preventDefault();
-    //     const updatedCart = [...cart];
-    //     const index = updatedCart.findIndex((item) => item.productId === itemToUpdate.productId);
-
-    //     if (index !== -1) {
-    //         if (e.target instanceof HTMLButtonElement) {
-    //             if (e.target.innerText === '-') {
-    //                 updatedCart[index].quantity -= 1;
-    //                 if (updatedCart[index].quantity === 0) {
-    //                     let confirm = window.confirm("Do you want to delete the product?")
-    //                     if (confirm) {
-    //                         updatedCart.splice(index, 1); // Remove the item from the cart
-    //                     } else {
-    //                         updatedCart[index].quantity = 1
-    //                     }
-    //                     setCart(updatedCart)
-    //                 }
-    //             } else if (e.target.innerText === '+') {
-    //                 updatedCart[index].quantity += 1;
-    //             }
-
-    //             localStorage.setItem('carts', JSON.stringify(updatedCart));
-    //             setCart(updatedCart);
-    //         }
-    //     }
-    // }
-
-    // function deleteItem(index: number, itemId: string) {
-    //     const updatedCart = [...cart];
-    //     updatedCart.splice(index, 1);
-
-    //     // Cập nhật giỏ hàng ở localStorage và state
-    //     localStorage.setItem('carts', JSON.stringify(updatedCart));
-    //     setCart(updatedCart);
-
-    // }
-    // function handleOrder() {
-
-    //     if (store.userStore.isLogin == true) {
-    //         let newGuestReceipt: newGuestReceipt = {
-    //             email: store.userStore.data.email,
-    //             total: cart.reduce((value, cur) => {
-    //                 return value + cur.quantity * cur.productDetail.price
-    //             }, 0),
-    //             payMode: "CASH"
-    //         }
-    //         let guestReceiptDetailList = JSON.parse(localStorage.getItem("carts") ?? "[]")
-
-    //         api.purchaseApi.createGuestReceipt(newGuestReceipt, guestReceiptDetailList)
-    //             .then(res => {
-    //                 console.log("res", res.data)
-    //             })
-    //             .catch(err => {
-    //                 console.log("err", err);
-
-    //             })
-    //     } else {
-    //         let userConfirm = window.confirm("You have not registered yet, please enter your information to purchase")
-    //         if (userConfirm) {
-    //             window.location.href = '/get-info'
-    //         }
-    //     }
-
-    // }
 
     const userStore = useSelector((store: StoreType) => store.userStore)
 
-    const [quantity, setQuantity] = useState(userStore.cart?.detail[0].quantity)
+    const initialQuantity = userStore.cart?.detail[0]?.quantity || 0;
+    const [quantity, setQuantity] = useState(initialQuantity)
     // const [quantity, setQuantity] = useState(0)
 
-    function deleteItem() {
-
+    const hadleDeleteItemFromCart = (optionId: string) => {
+        if (userStore.socket) {
+            userStore.socket.emit("deleteItemFromCart", {
+                receiptId: userStore.cart?.id,
+                optionId,
+            })
+        }
     }
 
     return (
@@ -131,8 +45,8 @@ export default function Cart() {
                     <div className="container">
                         <div className="row w-100">
                             <div className="col-lg-12 col-md-12 col-12">
-                                <h3 className=" mb-3 text-center" style={{ fontSize: '30px', fontWeight: 'bold' }}>List Shopping Cart</h3>
-                                <p className="mb-3 text-center">
+                                <h3 className=" mb-3 " style={{ fontSize: '32px', fontWeight: 'bold' }}>List Shopping Cart</h3>
+                                <p className="mb-3 font-italic ">
                                     <i className="fa-solid fa-tags"></i> <span className=" font-weight-bold">
                                         {userStore.cart?.detail.length}
                                     </span> items in your cart
@@ -144,8 +58,8 @@ export default function Cart() {
                                 >
                                     <thead>
                                         <tr>
-                                            <th style={{ width: "15%", fontWeight: 'bold' }}>#</th>
-                                            <th style={{ width: "40%", fontWeight: 'bold' }}>Product</th>
+                                            <th style={{ width: "10%", fontWeight: 'bold' }}>#</th>
+                                            <th style={{ width: "45%", fontWeight: 'bold' }}>Product</th>
                                             <th style={{ width: "12%", fontWeight: 'bold' }}>Price</th>
                                             <th style={{ width: "20%", fontWeight: 'bold' }}>Quantity</th>
                                             <th style={{ width: "15%", fontWeight: 'bold' }}>Total Item</th>
@@ -165,12 +79,11 @@ export default function Cart() {
                                                                     <img
                                                                         src={item.option.pictures[0].avatar}
                                                                         alt=""
-                                                                        className="img-fluid d-none d-md-block rounded mb-2 shadow "
-                                                                        style={{ width: '100px', height: '100px' }}
+                                                                        className="img-fluid d-none d-md-block rounded mb-2 shadow cart-image"
                                                                     />
                                                                 </div>
                                                                 <div className="col-md-9 text-left mt-sm-2">
-                                                                    <h4>{item.option.product.name}</h4>
+                                                                    <h6>{item.option.product.name}</h6>
                                                                     <p className="font-weight-light">{item.option.title}</p>
                                                                 </div>
                                                             </div>
@@ -222,12 +135,14 @@ export default function Cart() {
                                                                 <i className="fas fa-sync" />
                                                             </button> */}
                                                                 <button
-                                                                    // onClick={() => {
-                                                                    //     if (window.confirm("Delete?")) {
-                                                                    //         deleteItem(index, item.productId)
-                                                                    //         window.location.reload()
-                                                                    //     }
-                                                                    // }}
+                                                                    onClick={() => {
+                                                                        Modal.warning({
+                                                                            content: "Do you want to delete this product?",
+                                                                            onOk: () => {
+                                                                                hadleDeleteItemFromCart(item.optionId)
+                                                                            },
+                                                                        });
+                                                                    }}
                                                                     className="btn btn-white border-secondary bg-white btn-md mb-2">
                                                                     <i className="fas fa-trash" />
                                                                 </button>
@@ -257,20 +172,11 @@ export default function Cart() {
                                 </div>
                             </div>
                         </div>
-                        <div className="row mt-4 d-flex align-items-center">
-                            <div className="col-sm-6 order-md-2 text-right">
-                                {/* <a
-                                    href="catalog.html"
-                                    className="btn btn-primary mb-4 btn-lg pl-5 pr-5"
-                                >
-                                    Checkout
-                                </a> */}
-                            </div>
-                            <div className="col-sm-6 mb-3 mb-m-1 order-md-1 text-md-left">
-                                <a href="/">
-                                    <i className="fas fa-arrow-left mr-2" /> Continue Shopping
-                                </a>
-                            </div>
+                        <div className="row mt-4">
+                            <a href="/" style={{ marginRight: '800px' }} >
+                                <i className="fas fa-arrow-left mr-2" /> Continue Shopping
+                            </a>
+
                         </div>
                     </div>
                 </section>
@@ -280,7 +186,7 @@ export default function Cart() {
                 <MDBCol lg="12" className="px-5 py-4">
                     <MDBTypography
                         tag="h3"
-                        className=" mb-5 mt-3 pt-2 text-center fw-bold "
+                        className=" mb-5 mt-3 pt-2 text-left fw-bold "
                         style={{ fontSize: '30px' }}
                     >
                         Payment Method
@@ -297,10 +203,21 @@ export default function Cart() {
                                                 e.preventDefault();
                                                 let payMode = (e.target as any).payMode.value;
                                                 console.log("payMode", payMode)
-                                                userStore.socket?.emit("payCash", {
-                                                    receiptId: userStore.cart?.id,
-                                                    userId: userStore.data?.id
-                                                })
+
+                                                if (payMode == "CASH") {
+                                                    userStore.socket?.emit("payCash", {
+                                                        receiptId: userStore.cart?.id,
+                                                        userId: userStore.data?.id
+                                                    })
+                                                }
+
+                                                if (payMode == "ZALO") {
+                                                    userStore.socket?.emit("payZalo", {
+                                                        receiptId: userStore.cart?.id,
+                                                        userId: userStore.data?.id
+                                                    })
+                                                }
+
                                             }}
                                         >
 
@@ -329,6 +246,9 @@ export default function Cart() {
                                                     ZaloPay
                                                 </label>
                                             </div>
+                                            {
+                                                userStore.cartPayQr && <QRCode value={userStore.cartPayQr} icon='https://e7.pngegg.com/pngimages/900/307/png-clipart-logo-brand-daniel-wellington-watch-fashion-watch-text-rectangle-thumbnail.png' />
+                                            }
 
                                             <button
                                                 type="submit" className="payment-btn"

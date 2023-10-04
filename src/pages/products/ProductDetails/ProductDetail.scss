@@ -23,7 +23,6 @@
                     width: 300px;
                     height: 380px;
                     margin-top: 10px;
-                    margin-left: 70px;
                     object-fit: contain;
                 }
             }
@@ -31,8 +30,8 @@
 
         .mini_pictures img:hover {
             cursor: pointer;
-            transform: scale(1.1);
-            transition: transform 0.3s ease-in-out;
+            transform: scale(1.2);
+            transition: transform 1s ease-in-out;
 
         }
     }
@@ -47,7 +46,8 @@
         }
 
         .content-price {
-            margin-bottom: 0.5em;
+            margin-bottom: 1em;
+            font-size: 18px;
         }
 
         .content-quantity {
@@ -66,6 +66,7 @@
         }
 
         .content-option{
+            margin-top: 1em;
             cursor: pointer;
             img{
                 width: 70px;
@@ -77,8 +78,11 @@
             margin-top: 1em;
 
             .content-text-des-title {
-                font-size: 18px;
-                margin-bottom: 0.5em;
+                font-size: 20px;
+                    font-weight: bold;
+                    border-top: 1px solid $color_primary;
+                    margin: 0.5em 0px;
+                    padding-top: 0.5em;
             }
 
             .content-text-des-detail {
@@ -88,6 +92,7 @@
         }
 
         .add-cart-btn {
+            margin: 2em 0px;
             button {
                 width: 450px;
                 height: 50px;

@@ -8,7 +8,8 @@ interface UserState {
     reload: boolean;
     socket: Socket | null;
     receipt: Receipt[] | null;
-    cart: Receipt | null;
+    cart: Receipt | null;    
+    cartPayQr: null | string;
 }
 
 const initialState: UserState = {
@@ -16,13 +17,20 @@ const initialState: UserState = {
     reload: false,
     socket: null,
     receipt: null,
-    cart: null
+    cart: null,
+    cartPayQr: null
 }
 
 const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
+        allUser: function(state, action) {
+            return {
+                ...state ,
+                data: action.payload
+            }
+        },
         setData: function(state, action) {
             return {
                 ...state ,
@@ -45,6 +53,12 @@ const userSlice = createSlice({
             return {
                 ...state ,
                 cart: action.payload
+            }
+        },
+        setCartPayQr: function (state, action) {
+            return {
+                ...state,
+                cartPayQr: action.payload
             }
         },
         reload: function(state) {

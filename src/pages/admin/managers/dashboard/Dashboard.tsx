@@ -1,14 +1,18 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
+import { StoreType } from '~/stores'
 
 export default function Dashboard() {
+
+    // const userStore = useSelector((store: StoreType) => store.userStore)
     return (
         <div>
             <div className="home-content">
                 <div className="overview-boxes">
                     <div className="box">
                         <div className="right-side">
-                            <div className="box-topic">Total Order</div>
-                            <div className="number">40,876</div>
+                            <div className="box-topic">Total Product</div>
+                            <div className="number">1108</div>
                             <div className="indicator">
                                 <i className="bx bx-up-arrow-alt" />
                                 <span className="text">Up from yesterday</span>
@@ -18,8 +22,8 @@ export default function Dashboard() {
                     </div>
                     <div className="box">
                         <div className="right-side">
-                            <div className="box-topic">Total Sales</div>
-                            <div className="number">38,876</div>
+                            <div className="box-topic">Total User</div>
+                            <div className="number">459</div>
                             <div className="indicator">
                                 <i className="bx bx-up-arrow-alt" />
                                 <span className="text">Up from yesterday</span>
@@ -50,7 +54,7 @@ export default function Dashboard() {
                         <i className="bx bxs-cart-download cart four" />
                     </div>
                 </div>
-                <div className="sales-boxes">
+                {/* <div className="sales-boxes">
                     <div className="recent-sales box">
                         <div className="title">Recent Sales</div>
                         <div className="sales-details">
@@ -234,7 +238,7 @@ export default function Dashboard() {
                             </li>
                         </ul>
                     </div>
-                </div>
+                </div> */}
             </div>
 
         </div>

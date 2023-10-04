@@ -74,6 +74,8 @@ export default function ProductDetail() {
         api.productApi.findById(productId)
             .then(res => {
                 setProductDetail(res.data.data)
+                avatar != res.data.data.avatar ? setAvatar(avatar) : setAvatar(res.data.data.avatar)
+
             })
             .catch(err => {
                 console.log("err", err);
@@ -97,8 +99,8 @@ export default function ProductDetail() {
                         <div className="col-12 avatar_large">
                             <div className="lightbox bg-image hover-zoom">
                                 <img
-                                    // src={avatar == '' ? productDetail?.avatar : avatar}
-                                    src={productDetail?.options[0].pictures[0].avatar}
+                                    src={avatar == '' ? productDetail?.options[0].pictures[0].avatar : avatar}
+                                    // src={productDetail?.options[0].pictures[0].avatar}
                                     alt="Gallery image 1"
                                     className="ecommerce-gallery-main-img active w-100"
                                 />
@@ -129,7 +131,7 @@ export default function ProductDetail() {
 
             <div className='content'>
                 <div className='content-name'>{productDetail?.name}</div>
-                <div className='content-price'>{productDetail?.options[0].price}</div>
+                <div className='content-price'>{currency(productDetail?.options[0].price!).format()}</div>
                 <div className='content-quantity'>
                     <button type="button"
                         onClick={() => {
@@ -159,10 +161,6 @@ export default function ProductDetail() {
                     ))}
                 </div>
 
-                <div className='content-text-des' >
-                    <p className='content-text-des-title'>DESCRIPTION</p>
-                    <p className='content-text-des-detail'>{productDetail?.des}</p>
-                </div>
                 <div className='add-cart-btn'>
                     <button
                         onClick={() => {
@@ -184,13 +182,18 @@ export default function ProductDetail() {
                     >ADD TO BAGS</button>
                 </div>
 
+                <div className='content-text-des' >
+                    <p className='content-text-des-title'>DESCRIPTION</p>
+                    <p className='content-text-des-detail'>{productDetail?.des}</p>
+                </div>
+
+
                 <div className='content-text-care'>
                     <p className='content-text-care-title'>DETAILS & CARE</p>
                     <p className='content-text-care-detail'>
-                        <ul>
-                            <li>Delicate Dry Clean Only</li>
-                            <li>We Recommend Cleaning Directly After the Big Day to Avoid Stains</li>
-                        </ul>
+                        <p>Delicate Dry Clean Only</p>
+                        <p>We Recommend Cleaning Directly After the Big Day to Avoid Stains</p>
+
                     </p>
                 </div>
 

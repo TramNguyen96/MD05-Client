@@ -16,16 +16,16 @@ export default function RouteHomeBody() {
         <div>
             {
                 openChat == false
-                    ? <button onClick={() => {
+                    ? <span onClick={() => {
                         Modal.confirm({
-                            content: "Mở khung chat với tài khoản của bạn?",
+                            content: "Open chat box with your account?",
                             onOk: () => {
                                 setOpenChat(true)
                             }
                         })
-                    }} style={{ position: "fixed", right: "50px", bottom: "50px", fontSize: '25px', fontWeight: 'bold', border: '1px solid #000', padding: '10px' }}>Open Chat</button>
+                    }} style={{ position: "fixed", right: "30px", bottom: "30px", fontSize: '35px', fontWeight: 'bold', padding: '11px 18px', borderRadius: '50%', width: '70px', height: '70px', backgroundColor: '#ccc', zIndex: "9999" }}><i className="fa-regular fa-comment-dots" style={{ color: '#00081c' }}></i></span>
                     : <div style={{ width: "400px", position: "fixed", right: 0, bottom: 0 }}>
-                        <ChatBox open={openChat} />
+                        <ChatBox open={openChat} setOpenChat={setOpenChat} />
                     </div>
             }
             <Carousel />

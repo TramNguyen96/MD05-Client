@@ -87,6 +87,10 @@ export default function AddProduct() {
             })
 
         setLoad(false);
+        setFormValues({
+            name: "",
+            des: ""
+        })
 
     }
 

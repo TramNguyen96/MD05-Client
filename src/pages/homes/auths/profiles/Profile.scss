@@ -1,6 +1,9 @@
 .profile {
-    margin: 1em 0;
+    width: 80%;
+
+    margin: 2em auto;
     color: $color_primary;
+    box-shadow: 0px 6px 15px 5px rgba(0, 0, 0, 0.1);
 }
 
 .student-profile .cards {
@@ -31,4 +34,45 @@
     font-size: 14px;
     padding: 5px 10px;
     color: #000;
+}
+
+.hm-gradient {
+    background-image: linear-gradient(to top, #f3e7e9 0%, #e3eeff 99%, #e3eeff 100%);
+}
+
+.darken-grey-text {
+    color: #2E2E2E;
+}
+
+.bc-icons .breadcrumb-item+.breadcrumb-item::before {
+    content: none;
+}
+
+.bc-icons .breadcrumb-item.active {
+    color: #eeeeee;
+}
+
+.bc-icons-2 .breadcrumb-item+.breadcrumb-item::before {
+    content: none;
+}
+
+.bc-icons-2 .breadcrumb-item.active {
+    color: #455a64;
+}
+
+
+.light-font .breadcrumb-item+.breadcrumb-item::before {
+    color: #fff;
+}
+
+.light-font .breadcrumb-item.active {
+    color: #cfd8dc;
+}
+
+.dark-font .breadcrumb-item+.breadcrumb-item::before {
+    color: #000;
+}
+
+.dark-font .breadcrumb-item.active {
+    color: #455a64;
 }

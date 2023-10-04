@@ -1,0 +1,35 @@
+.user-management{
+    padding-top: 6em;
+}
+.list_product {
+    width: 90%;
+    margin: 2em auto;
+
+    table {
+        color: $color_primary;
+    }
+
+    .list_product_thead {
+        background-color: #000;
+        color: #fff;
+
+        th {
+            // font-weight: bold;
+        }
+    }
+
+    .list_product_tbody {
+        td {
+            img {
+                width: 100px;
+                height: 100px;
+                object-fit: contain;
+            }
+        }
+    }
+}
+
+.user-management-h1{
+    text-align: center;
+    margin-top: 1em;
+}

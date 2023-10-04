@@ -19,4 +19,37 @@ export default {
     authen: async function(data: any){
         return await axios.post(import.meta.env.VITE_SV_HOST + "authen", data)
     },
+
+    resendMail: async function() {
+        return await axios.get(`${import.meta.env.VITE_SV_HOST}users/` + "resend-email", {
+            headers: {
+                token: localStorage.getItem("token")
+            }
+        } )
+    },
+
+    googleLogin: async function (data: any) {
+         return await axios.post(import.meta.env.VITE_SV_HOST + "users" + "/google-login", data )
+    },
+
+    changePassword: async function (data: any) {
+         return await axios.post(import.meta.env.VITE_SV_HOST + "users" + "/change-password", data,  {
+            headers: {
+                "token": localStorage.getItem("token")
+            }
+        } )
+    },
+
+    resetPassword: async function (email: any) {
+        return await axios.post(import.meta.env.VITE_SV_HOST + "users/reset-password", email)
+    },
+
+    receiptFindAll: async function () {
+        return await axios.get(import.meta.env.VITE_SV_HOST + "receipt")
+    },
+
+    findReceiptById: async (receiptId: string) => {
+        return await axios.get(import.meta.env.VITE_SV_HOST + "receipt/" + receiptId )
+
+    },
 }

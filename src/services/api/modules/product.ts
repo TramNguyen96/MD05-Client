@@ -6,6 +6,10 @@ export default {
         return await axios.post(import.meta.env.VITE_SV_HOST + "products", newProduct )
     },
 
+    search: async function(searchKey: string){
+        return await axios.get(`${import.meta.env.VITE_SV_HOST}products/search?q=${searchKey}`)
+    },
+    
     findAll: async function(){
         return await axios.get(import.meta.env.VITE_SV_HOST + "products" )
     },
@@ -13,5 +17,7 @@ export default {
     findById: async function(productId: string){
         return await axios.get(import.meta.env.VITE_SV_HOST + "products/" +  productId)
     },
+
+
     
 }

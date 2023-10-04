@@ -2,7 +2,7 @@ export interface User {
     id: string;
     avatar: string;
     email: string;
-    emailAuthentication: boolean;
+    emailConfirm: boolean;
     firstName: string;
     lastName: string;
     userName: string;

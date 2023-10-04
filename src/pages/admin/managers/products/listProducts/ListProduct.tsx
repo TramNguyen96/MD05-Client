@@ -27,23 +27,26 @@ export default function ListProduct() {
     }, [])
 
     useEffect(() => {
-        console.log("productId", productId);
-
+        // console.log("productId truoc", productId);
     }, [productId])
+
+    useEffect(() => {
+        console.log("productStore.data", productStore.data);
+    }, [productStore.data])
 
 
     return (
         <div>
             <div className='list_product'>
-                <table className="table table-hover">
+                <table className="table table-hover text-center">
                     <thead className="thead-dark">
                         <tr className='list_product_thead'>
-                            <th style={{ width: '5%' }}>#</th>
-                            <th style={{ width: '25%' }}>Product Name</th>
+                            <th style={{ width: '10%' }}>#</th>
+                            <th style={{ width: '30%' }}>Product Name</th>
                             {/* <th style={{ width: '15%' }}>Price</th> */}
-                            <th style={{ width: '20%' }}>List Pictures</th>
-                            <th style={{ width: '20%' }}>Collection</th>
-                            <th style={{ width: '20%' }}>Product ID</th>
+                            <th style={{ width: '15%' }}>List Pictures</th>
+                            <th style={{ width: '15%' }}>Collection</th>
+                            <th style={{ width: '15%' }}>Product ID</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,17 +62,11 @@ export default function ListProduct() {
 
                                         <button onClick={() => {
                                             setProductId(product.id)
-                                        }} type="button" className="btn btn-primary">
-                                            <ProductOption productId={productId} setProductId={setProductId} />
+                                        }} type="button" className="btn btn-outline-danger">
+                                            {/* <ProductOption productId={productId} setProductId={setProductId} /> */}
+
+                                            Add Option
                                         </button>
-
-
-                                        {/* {
-                                            product.productPictures?.map((picture) => (
-                                                <img src={picture.path} />
-                                            ))
-                                        }
-                                        <img src={product.avatar} alt="" /> */}
                                     </td>
 
                                     <td>{product.categoryId}</td>
@@ -81,9 +78,9 @@ export default function ListProduct() {
                     </tbody>
                 </table>
             </div>
-            {/* {
+            {
                 productId && <ProductOption productId={productId} setProductId={setProductId} />
-            } */}
+            }
         </div>
     )
 }

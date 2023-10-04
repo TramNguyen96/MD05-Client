@@ -33,7 +33,7 @@ export default function BeforeNavbar() {
                                                         <img src={`${userStore.data?.avatar}`} className="avatar_login" />
                                                     </a>
 
-                                                    <p>{`Hi, ${userStore.data?.firstName} ${userStore.data?.lastName}`}
+                                                    <p>{`Hi, ${userStore.data?.userName}`}
                                                         {userStore.data?.role == "ADMIN" ? (
                                                             <a href="/admin/dashboard" className="feature_textname_a">
                                                                 <i className="fa-solid fa-user-shield"></i>
@@ -72,11 +72,11 @@ export default function BeforeNavbar() {
                         </div>
                     </div>
                     <div className="before_nav_content_middle">
-                        <p >Free extra strap when you buy a watch</p>
+                        <p ></p>
                     </div>
 
                     <div className="before_nav_content_right">
-                        <p>Language</p>
+                        <p>Free extra strap when you buy a watch</p>
 
                     </div>
                 </div>

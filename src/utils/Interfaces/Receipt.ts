@@ -10,6 +10,11 @@ enum ReceiptStatus {
     DONE = "DONE" // khách đã nhận hàng và hoàn tất thủ tục thanh toán
 }
 
+enum PayMode {
+    CASH = "CASH",
+    ZALO = "ZALO"
+}
+
 export interface ReceiptDetail {
     id: string;
     receiptId: string;
@@ -26,7 +31,9 @@ export interface Receipt {
     user: User;
     guest: Guest;
     total: number;
+    paid: boolean;
     status: ReceiptStatus;
+    payMode: PayMode;
     createAt: string;
     accepted: string;
     shipAt: string;

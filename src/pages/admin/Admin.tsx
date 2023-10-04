@@ -32,13 +32,13 @@ export default function Admin() {
                             </Link>
                         </li>
                         <li>
-                            <Link to="#">
+                            <Link to="/admin/users">
                                 <i className="bx bx-user" />
                                 <span className="links_name">User</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to="#">
+                            <Link to="/admin/receipts">
                                 <i className="bx bx-list-ul" />
                                 <span className="links_name">Order list</span>
                             </Link>
@@ -95,6 +95,9 @@ export default function Admin() {
                         <div className="sidebar-button">
                             <i className="bx bx-menu sidebarBtn" />
                             <span className="dashboard"></span>
+                            <a href="/" className='admin-btn-home' style={{ textDecoration: 'none', color: "#000", fontSize: '15px' }}>
+                                <i className="fa-solid fa-house"></i>
+                            </a>
                         </div>
 
                         <div className="search-box">
